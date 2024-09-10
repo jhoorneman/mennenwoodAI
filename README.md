@@ -1,5 +1,5 @@
 # mennenwoodAI
-Helper tool for the board game Wooden Ships and Iron Men. AI assisted
+Helper tool for the board game Wooden Ships and Iron Men. AI assisted continuation of https://github.com/tlaeven/mennenwood.
 
 ## Features
 
