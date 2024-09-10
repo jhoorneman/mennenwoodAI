@@ -1,41 +1,37 @@
-# ship.py
+# src/ship.py
 
 from dataclasses import dataclass
-
-from wsim_dataclasses import ShipStats
-from wsim_enums import DamageType, CrewQuality
+from wsim_dataclasses import ShipStats, CubeCoordinate
+from wsim_enums import ShipClass, CrewQuality, DamageType
 from typing import List
 
 
 @dataclass
 class Ship:
     name: str
-    ship_class: str  # Can expand to Enum later for more detailed ship types
+    ship_class: ShipClass
     crew_quality: CrewQuality
     stats: ShipStats
     log: List[str] = None
-    position: tuple[int, int] = None  # Hex coordinates on the board
+    position: CubeCoordinate = None  # Ship's position on the hex board
     attitude_to_wind: str = "A"  # Default wind attitude
 
-    def __post_init__(self):
+    def __post_init__(self) -> None:
         if self.log is None:
             self.log = []
         if self.position is None:
-            self.position = (0, 0)  # Default position on the map
+            self.position = CubeCoordinate(0, 0, 0)  # Default position
 
-    def set_crew(self, total_crew: int) -> None:
+    def set_position(self, position: CubeCoordinate) -> None:
         """
-        Set up the total crew and divide them into sections.
+        Set the ship's position on the board.
         """
-        self.stats.crew.total = total_crew
-        self.stats.crew.sections = [total_crew // 3] * 3
+        self.position = position
+        self.log_action(f"Position set to {position}")
 
     def take_damage(self, damage_type: DamageType, amount: int) -> None:
         """
-        Apply damage to the ship, either to hull, crew, guns, rigging, or carronades.
-
-        :param damage_type: Type of damage (as defined in the DamageType enum).
-        :param amount: The amount of damage taken.
+        Apply damage to the ship.
         """
         if damage_type == DamageType.HULL:
             self.stats.hull = max(self.stats.hull - amount, 0)
@@ -57,8 +53,6 @@ class Ship:
             self.stats.carronades.left = max(self.stats.carronades.left - amount, 0)
         elif damage_type == DamageType.CARRONADES_RIGHT:
             self.stats.carronades.right = max(self.stats.carronades.right - amount, 0)
-        else:
-            raise ValueError(f"Unknown damage type: {damage_type}")
 
     def log_action(self, action: str) -> None:
         """
@@ -67,6 +61,6 @@ class Ship:
         self.log.append(action)
 
     def __repr__(self) -> str:
-        return (f"Ship({self.name}, Class: {self.ship_class}, Hull: {self.stats.hull}, "
+        return (f"Ship({self.name}, Class: {self.ship_class.value}, Hull: {self.stats.hull}, "
                 f"Rigging: {self.stats.rigging}, Crew: {self.stats.crew.sections}, "
-                f"Guns: Left={self.stats.guns.left}, Right={self.stats.guns.right})")
+                f"Position: {self.position})")
