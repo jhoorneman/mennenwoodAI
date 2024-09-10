@@ -2,7 +2,7 @@
 
 from dataclasses import dataclass
 from wsim_dataclasses import ShipStats, CubeCoordinate
-from wsim_enums import ShipClass, CrewQuality, DamageType, WindDirection
+from wsim_enums import ShipClass, CrewQuality, DamageType, WindDirection, HitResult
 from typing import List, Optional
 
 
@@ -63,6 +63,57 @@ class Ship:
             self.log_action(f"Moved {speed} hexes in direction {direction}")
         else:
             self.log_action("Ship could not move due to wind.")
+
+    def fire_at(self, target_ship: 'Ship', range_in_hexes: int, dice_roll: int) -> None:
+        """
+        Handle firing at a target ship. This method uses hit tables and dice rolls to determine
+        the result of the attack and applies damage to the target.
+        :param target_ship: The target ship being fired upon.
+        :param range_in_hexes: The distance between the ships in hexes.
+        :param dice_roll: The result of the dice roll that will be used to consult the hit table.
+        """
+        # Simplified range check
+        if range_in_hexes > 5:
+            self.log_action(f"Attempted to fire at {target_ship.name}, but target is out of range.")
+            return
+
+        # Get the hit result based on the range, dice roll, and target ship stats
+        hit_result = self.consult_hit_table(range_in_hexes, dice_roll)
+
+        # Log the result
+        self.log_action(
+            f"Fired at {target_ship.name} at range {range_in_hexes} with a roll of {dice_roll}. Result: {hit_result.name}")
+
+        # Apply the damage to the target ship based on the hit result
+        self.apply_damage_to_target(target_ship, hit_result)
+
+    def consult_hit_table(self, range_in_hexes: int, dice_roll: int) -> HitResult:
+        """
+        Consult the hit table based on the range and dice roll to determine the result.
+        :param range_in_hexes: The distance between the ships in hexes.
+        :param dice_roll: The result of the dice roll.
+        :return: A HitResult enum describing the hit result.
+        """
+        # Placeholder for hit table logic. This should reference the actual hit tables.
+        if dice_roll > 10:  # Example threshold for a hit
+            return HitResult.HULL_HIT
+        elif dice_roll > 5:
+            return HitResult.RIGGING_HIT
+        else:
+            return HitResult.MISS
+
+    def apply_damage_to_target(self, target_ship: 'Ship', hit_result: HitResult) -> None:
+        """
+        Apply damage to the target ship based on the hit result.
+        :param target_ship: The ship that is being fired upon.
+        :param hit_result: The result of the hit (as a HitResult enum).
+        """
+        if hit_result == HitResult.HULL_HIT:
+            target_ship.take_damage(DamageType.HULL, 2)  # Apply hull damage
+        elif hit_result == HitResult.RIGGING_HIT:
+            target_ship.take_damage(DamageType.RIGGING, 1)  # Apply rigging damage
+        else:
+            self.log_action(f"Attack on {target_ship.name} missed.")
 
     def take_damage(self, damage_type: DamageType, amount: int) -> None:
         """

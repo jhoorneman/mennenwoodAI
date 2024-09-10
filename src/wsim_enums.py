@@ -35,3 +35,8 @@ class DamageType(Enum):
     GUNS_RIGHT = "guns_right"
     CARRONADES_LEFT = "carronades_left"
     CARRONADES_RIGHT = "carronades_right"
+
+class HitResult(Enum):
+    HULL_HIT = "Hull Hit"
+    RIGGING_HIT = "Rigging Hit"
+    MISS = "Miss"
