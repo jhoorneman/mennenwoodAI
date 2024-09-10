@@ -1,9 +1,9 @@
 # tests/test_ship.py
 
 import pytest
-from src.ship import Ship
-from src.wsim_enums import CrewQuality, DamageType
-from src.wsim_dataclasses import ShipStats, Guns, Carronades, Crew
+from ship import Ship
+from wsim_enums import CrewQuality, DamageType
+from wsim_dataclasses import ShipStats, Guns, Carronades, Crew
 
 
 @pytest.fixture

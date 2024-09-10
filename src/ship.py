@@ -1,7 +1,8 @@
 # ship.py
 
 from dataclasses import dataclass
-from wsim_dataclasses import ShipStats, Guns, Carronades, Crew
+
+from wsim_dataclasses import ShipStats
 from wsim_enums import DamageType, CrewQuality
 from typing import List
 
@@ -56,6 +57,8 @@ class Ship:
             self.stats.carronades.left = max(self.stats.carronades.left - amount, 0)
         elif damage_type == DamageType.CARRONADES_RIGHT:
             self.stats.carronades.right = max(self.stats.carronades.right - amount, 0)
+        else:
+            raise ValueError(f"Unknown damage type: {damage_type}")
 
     def log_action(self, action: str) -> None:
         """
