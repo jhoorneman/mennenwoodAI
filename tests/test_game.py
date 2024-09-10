@@ -37,8 +37,10 @@ def test_ship_positions(create_game_with_ships: Game) -> None:
     assert game.get_ship_position("HMS Victory") == CubeCoordinate(1, 0, -1)
 
 
-def test_move_ship(create_game_with_ships: Game) -> None:
+def test_ship_movement(create_game_with_ships: Game) -> None:
     game = create_game_with_ships
 
-    game.move_ship("USS Constellation", CubeCoordinate(1, -1, 0))
-    assert game.get_ship_position("USS Constellation") == CubeCoordinate(1, -1, 0)
+    # Move USS Constellation with wind direction north
+    direction = CubeCoordinate(0, 1, -1)  # North direction in cube coords
+    game.move_ship("USS Constellation", direction)
+    assert game.get_ship_position("USS Constellation") == CubeCoordinate(0, 2, -2)

@@ -23,25 +23,28 @@ class Game:
         ship.set_position(position)
         self.ships[ship.name] = ship
 
-    def move_ship(self, ship_name: str, new_position: CubeCoordinate) -> None:
+    def get_ship(self, ship_name: str) -> Ship:
         """
-        Moves a ship to a new position on the board.
+        Retrieve a ship by its name. Raises an error if the ship does not exist.
+        :param ship_name: The name of the ship.
+        :return: The Ship object.
         """
         if ship_name not in self.ships:
             raise ValueError(f"Ship {ship_name} not found.")
+        return self.ships[ship_name]
 
-        ship = self.ships[ship_name]
-        ship.set_position(new_position)
-        ship.log_action(f"Moved to {new_position}")
+    def move_ship(self, ship_name: str, direction: CubeCoordinate) -> None:
+        """
+        Moves a ship based on wind direction and movement rules.
+        """
+        ship = self.get_ship(ship_name)
+        ship.move(direction, self.wind_direction)
 
     def get_ship_position(self, ship_name: str) -> CubeCoordinate:
         """
         Returns the position of a ship.
         """
-        if ship_name not in self.ships:
-            raise ValueError(f"Ship {ship_name} not found.")
-
-        return self.ships[ship_name].position
+        return self.get_ship(ship_name).position
 
     def update_wind(self, new_wind_direction: WindDirection) -> None:
         """
