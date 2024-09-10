@@ -1,6 +1,25 @@
 # MennenwoodAI
 Helper tool for the board game Wooden Ships and Iron Men. AI assisted continuation of https://github.com/tlaeven/mennenwood. See for complete rules of the game: https://archive.org/details/wooden-ships-amp-iron-men_compress/page/7/mode/2up
 
+## Installation
+This project is managed using poetry. To install:
+```bash
+pip install poetry
+poetry install
+```
+Dependencies can be added with:
+```bash
+poetry add <package-name>
+```
+Or dependencies needed only for development (such as pytest)
+```bash
+poetry add --dev <package-name>
+```
+Tests can be run in Pycharm or from the commandline with:
+```bash
+poetry run pytest
+```
+
 ## Features
 
 **Ship Management System**

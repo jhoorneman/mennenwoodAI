@@ -1,0 +1,24 @@
+[tool.pytest.ini_options]
+env = [
+    "PYTHONPATH=src"
+]
+
+[tool.poetry]
+name = "mennenwoodai"
+version = "0.1.0"
+description = "Helper tool for Wooden Ships and Iron Men"
+authors = ["jochem.hoorneman <jochem.hoorneman@outlook.com>"]
+readme = "README.md"
+# only use poetry for dependency management, not packaging
+package-mode = false
+
+[tool.poetry.dependencies]
+python = "^3.12"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.3"
+pytest-env = "^1.1.4"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
